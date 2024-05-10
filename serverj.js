@@ -15,7 +15,8 @@ app.listen(port, ()=>{
 
 app.get('/', (req, res)=>{
 
-    const url = "https://api.openweathermap.org/data/2.5/weather?q=Manila&appid=b2a550c65a00f134d9a817cfcbd1f1b4&unit=metric"
+    const city = "New York"
+    const url = "https://api.openweathermap.org/data/2.5/weather?q=" + city +"&appid=b2a550c65a00f134d9a817cfcbd1f1b4&unit=metric"
 
     https.get(url, (response)=>{
         console.log(response);
@@ -25,13 +26,15 @@ app.get('/', (req, res)=>{
             const weatherData = JSON.parse(data)
             const temp = weatherData.main.temp
             const description = weatherData.weather[0].description
-            
-            res.write(`<h1> The weather in Manila is ${description}
+            const icon = weatherData.weather[0].icon
+            const iconURL = "https://openweathermap.org/img/wn/" + icon +"@2x.png"
+            res.write(`<h1> The weather in ${city} is ${description}
             `)
-            res.write(`<h1> The temperature in Manila is ${temp}
+            res.write(`<h1> The temperature in ${city} is ${temp}
+            `)
+            res.write(`<img src=${iconURL}>
             `)
             res.send();
-            //res.send(`The temparature is ${temp}`)
         })
 
     })
